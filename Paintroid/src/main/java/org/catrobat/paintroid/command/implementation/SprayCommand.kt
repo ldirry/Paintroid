@@ -30,6 +30,8 @@ class SprayCommand(
         private val paint: Paint
 ) : Command {
 
+    constructor() : this(FloatArray(5),Paint())
+
     override fun run(canvas: Canvas?, layerModel: LayerContracts.Model?) {
         canvas?.drawPoints(sprayedPoints, paint)
     }

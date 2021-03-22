@@ -140,6 +140,11 @@ dependencies {
     pmd 'net.sourceforge.pmd:pmd-java:5.8.1'
 
     checkstyle 'com.puppycrawl.tools:checkstyle:7.6'
+
+    implementation ('com.esotericsoftware:kryo:5.0.4') {
+        exclude group: "org.objenesis"
+    }
+    implementation 'org.objenesis:objenesis:2.6'
 }
 
 tasks.withType(Javadoc).all {

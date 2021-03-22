@@ -43,6 +43,10 @@ public interface CommandManager {
 
 	boolean isBusy();
 
+	Command getInitCommand();
+
+	Command getFirst();
+
 	interface CommandListener {
 		void commandPostExecute();
 	}

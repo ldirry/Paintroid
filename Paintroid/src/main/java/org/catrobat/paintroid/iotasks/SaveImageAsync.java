@@ -128,6 +128,7 @@ public class SaveImageAsync extends AsyncTask<Void, Void, Uri> {
 		}
 	}
 
+
 	@Override
 	protected void onPostExecute(Uri uri) {
 		SaveImageCallback callback = callbackRef.get();

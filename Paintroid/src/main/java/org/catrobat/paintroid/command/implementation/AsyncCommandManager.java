@@ -60,6 +60,11 @@ public class AsyncCommandManager implements CommandManager {
 		return commandManager.isRedoAvailable();
 	}
 
+
+	public Command getInitCommand() {
+		return commandManager.getInitCommand();
+	}
+
 	@Override
 	public void addCommand(final Command command) {
 		if (busy) {
@@ -165,6 +170,13 @@ public class AsyncCommandManager implements CommandManager {
 	public void setInitialStateCommand(Command command) {
 		synchronized (layerModel) {
 			commandManager.setInitialStateCommand(command);
+		}
+	}
+
+	@Override
+	public Command getFirst() {
+		synchronized (layerModel) {
+			return commandManager.getFirst();
 		}
 	}
 

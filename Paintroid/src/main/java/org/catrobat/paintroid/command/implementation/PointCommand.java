@@ -34,6 +34,10 @@ public class PointCommand implements Command {
 	@VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
 	public PointF point;
 
+	public PointCommand() {
+
+	}
+
 	public PointCommand(Paint paint, PointF point) {
 		this.paint = paint;
 		this.point = point;

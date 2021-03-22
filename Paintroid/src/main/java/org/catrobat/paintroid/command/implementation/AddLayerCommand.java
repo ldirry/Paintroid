@@ -30,6 +30,9 @@ import org.catrobat.paintroid.model.Layer;
 public class AddLayerCommand implements Command {
 	private CommonFactory commonFactory;
 
+	public AddLayerCommand() {
+
+	}
 	public AddLayerCommand(CommonFactory commonFactory) {
 		this.commonFactory = commonFactory;
 	}

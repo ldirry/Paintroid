@@ -80,6 +80,11 @@ public class DefaultCommandManager implements CommandManager {
 	}
 
 	@Override
+	public Command getFirst() {
+		return undoCommandList.getFirst();
+	}
+
+	@Override
 	public void undo() {
 		Command command = undoCommandList.pop();
 		redoCommandList.addFirst(command);
@@ -136,6 +141,11 @@ public class DefaultCommandManager implements CommandManager {
 	@Override
 	public void setInitialStateCommand(Command command) {
 		initialStateCommand = command;
+	}
+
+	@Override
+	public Command getInitCommand() {
+		return initialStateCommand;
 	}
 
 	@Override

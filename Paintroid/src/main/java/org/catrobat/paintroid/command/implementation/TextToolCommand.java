@@ -29,13 +29,13 @@ import org.catrobat.paintroid.command.Command;
 import org.catrobat.paintroid.contract.LayerContracts;
 
 public class TextToolCommand implements Command {
-	private final String[] multilineText;
-	private final Paint textPaint;
-	private final float boxOffset;
-	private final float boxWidth;
-	private final float boxHeight;
-	private final PointF toolPosition;
-	private final float rotationAngle;
+	private String[] multilineText;
+	private Paint textPaint;
+	private float boxOffset;
+	private float boxWidth;
+	private float boxHeight;
+	private PointF toolPosition;
+	private float rotationAngle;
 
 	public TextToolCommand(String[] multilineText, Paint textPaint, float boxOffset,
 			float boxWidth, float boxHeight, PointF toolPosition, float rotationAngle) {
@@ -47,6 +47,8 @@ public class TextToolCommand implements Command {
 		this.toolPosition = toolPosition;
 		this.rotationAngle = rotationAngle;
 	}
+
+	public TextToolCommand() {}
 
 	@Override
 	public void run(Canvas canvas, LayerContracts.Model layerModel) {

@@ -23,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.util.Log;
 
 import org.catrobat.paintroid.command.Command;
 import org.catrobat.paintroid.command.CommandManager;
@@ -126,8 +127,10 @@ public class BrushTool extends BaseTool {
 				drawToolMovedDistance.y + Math.abs(coordinate.y - previousEventCoordinate.y));
 		boolean returnValue;
 		if (MOVE_TOLERANCE < drawToolMovedDistance.x || MOVE_TOLERANCE < drawToolMovedDistance.y) {
+			Log.d("yoo", "added path command");
 			returnValue = addPathCommand(coordinate);
 		} else {
+			Log.d("yoo", "added point command");
 			returnValue = addPointCommand(initialEventCoordinate);
 		}
 		return returnValue;

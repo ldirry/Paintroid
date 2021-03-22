@@ -26,6 +26,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -40,6 +43,15 @@ import org.catrobat.paintroid.UserPreferences;
 import org.catrobat.paintroid.command.Command;
 import org.catrobat.paintroid.command.CommandFactory;
 import org.catrobat.paintroid.command.CommandManager;
+import org.catrobat.paintroid.command.implementation.AddLayerCommand;
+import org.catrobat.paintroid.command.implementation.CompositeCommand;
+import org.catrobat.paintroid.command.implementation.PathCommand;
+import org.catrobat.paintroid.command.implementation.PointCommand;
+import org.catrobat.paintroid.command.implementation.SetDimensionCommand;
+import org.catrobat.paintroid.command.implementation.SprayCommand;
+import org.catrobat.paintroid.command.implementation.TextToolCommand;
+import org.catrobat.paintroid.common.CommonFactory;
+import org.catrobat.paintroid.common.Constants;
 import org.catrobat.paintroid.common.MainActivityConstants.ActivityRequestCode;
 import org.catrobat.paintroid.common.MainActivityConstants.CreateFileRequestCode;
 import org.catrobat.paintroid.common.MainActivityConstants.LoadImageRequestCode;
@@ -62,14 +74,24 @@ import org.catrobat.paintroid.iotasks.LoadImageAsync.LoadImageCallback;
 import org.catrobat.paintroid.iotasks.SaveImageAsync.SaveImageCallback;
 import org.catrobat.paintroid.tools.ToolType;
 import org.catrobat.paintroid.tools.Workspace;
+import org.catrobat.paintroid.tools.implementation.BrushTool;
 import org.catrobat.paintroid.ui.LayerAdapter;
 import org.catrobat.paintroid.ui.Perspective;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
+
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.serializers.JavaSerializer;
 
 import static org.catrobat.paintroid.common.MainActivityConstants.CREATE_FILE_DEFAULT;
 import static org.catrobat.paintroid.common.MainActivityConstants.LOAD_IMAGE_CATROID;
@@ -484,7 +506,7 @@ public class MainActivityPresenter implements Presenter, SaveImageCallback, Load
 
 	@Override
 	public void onBackPressed() {
-		if (drawerLayoutViewHolder.isDrawerOpen(GravityCompat.START)) {
+		/*if (drawerLayoutViewHolder.isDrawerOpen(GravityCompat.START)) {
 			drawerLayoutViewHolder.closeDrawer(Gravity.START, true);
 		} else if (drawerLayoutViewHolder.isDrawerOpen(GravityCompat.END)) {
 			drawerLayoutViewHolder.closeDrawer(Gravity.END, true);
@@ -495,13 +517,66 @@ public class MainActivityPresenter implements Presenter, SaveImageCallback, Load
 			toolController.switchTool(ToolType.BRUSH, true);
 		} else {
 			showSecurityQuestionBeforeExit();
+		}*/
+		Input input = null;
+		Kryo kryo = new Kryo();
+		kryo.register(Command.class);
+		kryo.register(CompositeCommand.class);
+		kryo.register(ArrayList.class);
+		kryo.register(SetDimensionCommand.class);
+		kryo.register(AddLayerCommand.class);
+		kryo.register(CommonFactory.class);
+		kryo.register(TextToolCommand.class);
+		kryo.register(Paint.class);
+		kryo.register(PointF.class);
+		kryo.register(String[].class);
+		try {
+			input = new Input(new FileInputStream(new File(fileActivity.getApplicationContext().getExternalFilesDir(null), "wowowo.bin")));
+			//CompositeCommand object2 = kryo.readObject(input, CompositeCommand.class);
+
+			//commandManager.setInitialStateCommand(object2);
+			TextToolCommand p = kryo.readObject(input, TextToolCommand.class);
+			boolean f = p.equals(x);
+			input.close();
+			commandManager.reset();
+			commandManager.addCommand(p);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	@Override
 	public void saveImageConfirmClicked(int requestCode, Uri uri) {
-		interactor.saveImage(this, requestCode, workspace, uri);
+		//interactor.saveImage(this, requestCode, workspace, uri);
+		Kryo kryo = new Kryo();
+		kryo.register(Command.class);
+		kryo.register(CompositeCommand.class);
+		kryo.register(ArrayList.class);
+		kryo.register(SetDimensionCommand.class);
+		kryo.register(AddLayerCommand.class);
+		kryo.register(CommonFactory.class);
+		kryo.register(TextToolCommand.class);
+		kryo.register(Paint.class);
+		kryo.register(PointF.class);
+		kryo.register(String[].class);
+		try {
+			Output output = new Output(new FileOutputStream(new File(fileActivity.getApplicationContext().getExternalFilesDir(null), "wowowo.bin")));
+			//kryo.writeObject(output, (CompositeCommand)commandManager.getInitCommand());
+			x = (TextToolCommand)commandManager.getFirst();
+			commandManager.reset();
+			kryo.writeObject(output, x);
+			output.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+
+		//Input input = new Input(new FileInputStream("file.bin"));
+		//SomeClass object2 = kryo.readObject(input, SomeClass.class);
+		//input.close();
 	}
+	private TextToolCommand x = null;
 
 	@Override
 	public void saveCopyConfirmClicked(int requestCode) {

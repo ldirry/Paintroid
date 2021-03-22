@@ -24,10 +24,15 @@ import android.graphics.Canvas;
 import org.catrobat.paintroid.command.Command;
 import org.catrobat.paintroid.contract.LayerContracts;
 
+import java.io.Serializable;
+
 public class SetDimensionCommand implements Command {
 
-	private final int width;
-	private final int height;
+	private int width;
+	private int height;
+
+	public SetDimensionCommand(){
+	}
 
 	public SetDimensionCommand(int width, int height) {
 		this.width = width;

@@ -34,6 +34,10 @@ public class PathCommand implements Command {
 	@VisibleForTesting
 	public Path path;
 
+	public PathCommand() {
+
+	}
+
 	public PathCommand(Paint paint, Path path) {
 		this.paint = paint;
 		this.path = path;
