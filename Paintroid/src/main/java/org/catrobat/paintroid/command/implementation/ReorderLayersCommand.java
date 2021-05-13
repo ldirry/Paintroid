@@ -43,4 +43,12 @@ public class ReorderLayersCommand implements Command {
 	@Override
 	public void freeResources() {
 	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public int getDestination() {
+		return destination;
+	}
 }

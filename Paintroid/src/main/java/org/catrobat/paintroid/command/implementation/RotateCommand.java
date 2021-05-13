@@ -72,4 +72,8 @@ public class RotateCommand implements Command {
 	public enum RotateDirection {
 		ROTATE_LEFT, ROTATE_RIGHT
 	}
+
+	public RotateDirection getRotateDirection() {
+		return rotateDirection;
+	}
 }

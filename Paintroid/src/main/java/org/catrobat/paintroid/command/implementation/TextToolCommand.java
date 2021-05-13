@@ -26,19 +26,22 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 
 import org.catrobat.paintroid.command.Command;
+import org.catrobat.paintroid.command.serialization.SerializableTypeface;
 import org.catrobat.paintroid.contract.LayerContracts;
 
 public class TextToolCommand implements Command {
-	private final String[] multilineText;
+	public final String[] multilineText;
 	private final Paint textPaint;
 	private final float boxOffset;
 	private final float boxWidth;
 	private final float boxHeight;
 	private final PointF toolPosition;
 	private final float rotationAngle;
+	private final SerializableTypeface typeFaceInfo;
 
 	public TextToolCommand(String[] multilineText, Paint textPaint, float boxOffset,
-			float boxWidth, float boxHeight, PointF toolPosition, float rotationAngle) {
+							float boxWidth, float boxHeight, PointF toolPosition,
+							float rotationAngle, SerializableTypeface typeFaceInfo) {
 		this.multilineText = multilineText.clone();
 		this.textPaint = textPaint;
 		this.boxOffset = boxOffset;
@@ -46,6 +49,7 @@ public class TextToolCommand implements Command {
 		this.boxHeight = boxHeight;
 		this.toolPosition = toolPosition;
 		this.rotationAngle = rotationAngle;
+		this.typeFaceInfo = typeFaceInfo;
 	}
 
 	@Override
@@ -88,5 +92,33 @@ public class TextToolCommand implements Command {
 
 	@Override
 	public void freeResources() {
+	}
+
+	public Paint getTextPaint() {
+		return textPaint;
+	}
+
+	public float getBoxOffset() {
+		return boxOffset;
+	}
+
+	public float getBoxWidth() {
+		return boxWidth;
+	}
+
+	public float getBoxHeight() {
+		return boxHeight;
+	}
+
+	public PointF getToolPosition() {
+		return toolPosition;
+	}
+
+	public float getRotationAngle() {
+		return rotationAngle;
+	}
+
+	public SerializableTypeface getTypeFaceInfo() {
+		return typeFaceInfo;
 	}
 }

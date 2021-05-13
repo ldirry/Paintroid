@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import org.catrobat.paintroid.command.serialization.CommandSerializationUtilities;
 import org.catrobat.paintroid.ui.Perspective;
 
 import java.util.List;
@@ -39,6 +40,8 @@ public interface Workspace {
 	int getSurfaceWidth();
 
 	int getSurfaceHeight();
+
+	CommandSerializationUtilities getCommandSerializationHelper();
 
 	Bitmap getBitmapOfAllLayers();
 

@@ -32,7 +32,8 @@ import org.catrobat.paintroid.contract.LayerContracts;
 public class StampCommand extends BaseCommand {
 	private final Point coordinates;
 	private final float boxRotation;
-	private final RectF boxRect;
+	private final float boxWidth;
+	private final float boxHeight;
 
 	public StampCommand(Bitmap bitmap, Point position, float width, float height, float rotation) {
 		super(new Paint(Paint.DITHER_FLAG));
@@ -46,9 +47,9 @@ public class StampCommand extends BaseCommand {
 			this.bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, false);
 		}
 
+		boxWidth = width;
+		boxHeight = height;
 		boxRotation = rotation;
-		boxRect = new RectF(-width / 2f, -height / 2f, width / 2f,
-				height / 2f);
 	}
 
 	@Override
@@ -65,15 +66,33 @@ public class StampCommand extends BaseCommand {
 		canvas.save();
 		canvas.translate(coordinates.x, coordinates.y);
 		canvas.rotate(boxRotation);
-		canvas.drawBitmap(bitmap, null, boxRect, paint);
+		RectF rect = new RectF(-boxWidth / 2f, -boxHeight / 2f, boxWidth / 2f,
+				boxHeight / 2f);
+		canvas.drawBitmap(bitmap, null, rect, paint);
 
 		canvas.restore();
 
 		if (fileToStoredBitmap == null) {
-			storeBitmap(PaintroidApplication.cacheDir);
+			storeBitmap(PaintroidApplication.cacheDir, boxWidth, boxHeight);
 		} else {
 			bitmap.recycle();
 			bitmap = null;
 		}
+	}
+
+	public Point getCoordinates() {
+		return coordinates;
+	}
+
+	public float getBoxRotation() {
+		return boxRotation;
+	}
+
+	public float getBoxWidth() {
+		return boxWidth;
+	}
+
+	public float getBoxHeight() {
+		return boxHeight;
 	}
 }

@@ -53,4 +53,8 @@ public class LoadBitmapListCommand implements Command {
 	@Override
 	public void freeResources() {
 	}
+
+	public List<Bitmap> getLoadedImageList() {
+		return loadedImageList;
+	}
 }

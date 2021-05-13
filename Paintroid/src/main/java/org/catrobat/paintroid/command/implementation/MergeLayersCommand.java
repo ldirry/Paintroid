@@ -55,4 +55,12 @@ public class MergeLayersCommand implements Command {
 	@Override
 	public void freeResources() {
 	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public int getMergeWith() {
+		return mergeWith;
+	}
 }

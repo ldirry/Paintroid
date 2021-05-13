@@ -69,11 +69,12 @@ public abstract class BaseCommand implements Command {
 		}
 	}
 
-	protected final void storeBitmap(File cacheDir) {
+	protected final void storeBitmap(File cacheDir, float boxWidth, float boxHeight) {
 		Random random = new Random();
 		random.setSeed(System.currentTimeMillis());
 		fileToStoredBitmap = new File(cacheDir.getAbsolutePath(),
 				Long.toString(random.nextLong()));
+		bitmap = scaleBitmap(boxWidth, boxHeight);
 		try {
 			FileOutputStream fos = new FileOutputStream(fileToStoredBitmap);
 			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -86,7 +87,30 @@ public abstract class BaseCommand implements Command {
 		bitmap = null;
 	}
 
+	protected final Bitmap scaleBitmap(float boxWidth, float boxHeight) {
+		int newWidth = boxWidth < bitmap.getWidth() ? (int) boxWidth : bitmap.getWidth();
+		int newHeight = boxHeight < bitmap.getHeight() ? (int) boxHeight : bitmap.getHeight();
+		if (newWidth == bitmap.getWidth() && newHeight == bitmap.getHeight()) {
+			return bitmap;
+		}
+		Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
+		bitmap.recycle();
+		return scaledBitmap;
+	}
+
 	public enum NotifyStates {
 		COMMAND_STARTED, COMMAND_DONE, COMMAND_FAILED
+	}
+
+	public Paint getPaint() {
+		return paint;
+	}
+
+	public Bitmap getBitmap() {
+		return bitmap;
+	}
+
+	public File getFileToStoredBitmap() {
+		return fileToStoredBitmap;
 	}
 }

@@ -45,4 +45,8 @@ public class LoadCommand implements Command {
 	@Override
 	public void freeResources() {
 	}
+
+	public Bitmap getLoadedImage() {
+		return loadedImage;
+	}
 }

@@ -58,4 +58,16 @@ public class FillCommand implements Command {
 	@Override
 	public void freeResources() {
 	}
+
+	public Paint getPaint() {
+		return paint;
+	}
+
+	public float getColorTolerance() {
+		return colorTolerance;
+	}
+
+	public Point getClickedPixel() {
+		return clickedPixel;
+	}
 }

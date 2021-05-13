@@ -43,4 +43,12 @@ public class SetDimensionCommand implements Command {
 	@Override
 	public void freeResources() {
 	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
 }

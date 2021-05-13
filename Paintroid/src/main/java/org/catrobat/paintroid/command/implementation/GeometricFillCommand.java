@@ -58,4 +58,28 @@ public class GeometricFillCommand implements Command {
 	public void freeResources() {
 		//No resources to free
 	}
+
+	public float getBoxRotation() {
+		return boxRotation;
+	}
+
+	public RectF getBoxRect() {
+		return boxRect;
+	}
+
+	public int getPointX() {
+		return pointX;
+	}
+
+	public int getPointY() {
+		return pointY;
+	}
+
+	public Paint getPaint() {
+		return paint;
+	}
+
+	public ShapeDrawable getShapeDrawable() {
+		return shapeDrawable;
+	}
 }

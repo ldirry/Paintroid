@@ -298,7 +298,7 @@ public interface MainActivityContracts {
 
 		void saveImage(SaveImageAsync.SaveImageCallback callback, int requestCode, Workspace workspace, Uri uri);
 
-		void loadFile(LoadImageAsync.LoadImageCallback callback, int requestCode, Uri uri, Context context, boolean scaling);
+		void loadFile(LoadImageAsync.LoadImageCallback callback, int requestCode, Uri uri, Context context, boolean scaling, Workspace workspace);
 	}
 
 	interface TopBarViewHolder {

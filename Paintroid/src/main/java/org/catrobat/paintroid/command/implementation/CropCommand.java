@@ -93,4 +93,24 @@ public class CropCommand implements Command {
 	@Override
 	public void freeResources() {
 	}
+
+	public int getResizeCoordinateXLeft() {
+		return resizeCoordinateXLeft;
+	}
+
+	public int getResizeCoordinateYTop() {
+		return resizeCoordinateYTop;
+	}
+
+	public int getResizeCoordinateXRight() {
+		return resizeCoordinateXRight;
+	}
+
+	public int getResizeCoordinateYBottom() {
+		return resizeCoordinateYBottom;
+	}
+
+	public int getMaximumBitmapResolution() {
+		return maximumBitmapResolution;
+	}
 }

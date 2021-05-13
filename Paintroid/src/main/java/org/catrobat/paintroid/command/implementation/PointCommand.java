@@ -47,4 +47,12 @@ public class PointCommand implements Command {
 	@Override
 	public void freeResources() {
 	}
+
+	public Paint getPaint() {
+		return paint;
+	}
+
+	public PointF getPoint() {
+		return point;
+	}
 }

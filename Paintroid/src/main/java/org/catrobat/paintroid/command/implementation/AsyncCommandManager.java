@@ -24,6 +24,7 @@ import android.os.AsyncTask;
 import org.catrobat.paintroid.command.Command;
 import org.catrobat.paintroid.command.CommandManager;
 import org.catrobat.paintroid.contract.LayerContracts;
+import org.catrobat.paintroid.model.CommandManagerModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,35 @@ public class AsyncCommandManager implements CommandManager {
 				if (!shuttingDown) {
 					synchronized (layerModel) {
 						commandManager.addCommand(command);
+					}
+				}
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Void aVoid) {
+				notifyCommandPostExecute();
+			}
+		}.execute();
+	}
+
+	@Override
+	public void loadCommandsCatrobatImage(final CommandManagerModel model) {
+		if (busy) {
+			return;
+		}
+
+		new AsyncTask<Void, Void, Void>() {
+			@Override
+			protected void onPreExecute() {
+				notifyCommandPreExecute();
+			}
+
+			@Override
+			protected Void doInBackground(Void... voids) {
+				if (!shuttingDown) {
+					synchronized (layerModel) {
+						commandManager.loadCommandsCatrobatImage(model);
 					}
 				}
 				return null;
@@ -171,6 +201,11 @@ public class AsyncCommandManager implements CommandManager {
 	@Override
 	public boolean isBusy() {
 		return busy;
+	}
+
+	@Override
+	public CommandManagerModel getCommandManagerModel() {
+		return commandManager.getCommandManagerModel();
 	}
 
 	private void notifyCommandPreExecute() {

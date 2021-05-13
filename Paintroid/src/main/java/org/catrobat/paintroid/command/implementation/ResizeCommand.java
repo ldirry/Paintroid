@@ -52,4 +52,12 @@ public class ResizeCommand implements Command {
 	@Override
 	public void freeResources() {
 	}
+
+	public int getNewWidth() {
+		return newWidth;
+	}
+
+	public int getNewHeight() {
+		return newHeight;
+	}
 }

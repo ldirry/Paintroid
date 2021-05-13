@@ -39,4 +39,8 @@ public class SelectLayerCommand implements Command {
 	@Override
 	public void freeResources() {
 	}
+
+	public int getPosition() {
+		return position;
+	}
 }

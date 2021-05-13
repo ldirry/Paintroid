@@ -50,4 +50,8 @@ public class CompositeCommand implements Command {
 			command.freeResources();
 		}
 	}
+
+	public List<Command> getCommands() {
+		return commands;
+	}
 }

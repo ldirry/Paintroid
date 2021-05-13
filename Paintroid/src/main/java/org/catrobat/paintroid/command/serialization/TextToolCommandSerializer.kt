@@ -1,0 +1,67 @@
+package org.catrobat.paintroid.command.serialization
+
+import android.content.Context
+import android.graphics.Paint
+import android.graphics.PointF
+import android.graphics.Typeface
+import androidx.core.content.res.ResourcesCompat
+import com.esotericsoftware.kryo.Kryo
+import com.esotericsoftware.kryo.io.Input
+import com.esotericsoftware.kryo.io.Output
+import org.catrobat.paintroid.R
+import org.catrobat.paintroid.command.implementation.TextToolCommand
+
+class TextToolCommandSerializer(version: Int, private val activityContext: Context): VersionSerializer<TextToolCommand>(version) {
+    override fun write(kryo: Kryo, output: Output, command: TextToolCommand) {
+        with(kryo) {
+            with(output) {
+                writeObject(output, command.multilineText)
+                writeObject(output, command.textPaint)
+                writeFloat(command.boxOffset)
+                writeFloat(command.boxWidth)
+                writeFloat(command.boxHeight)
+                writeObject(output, command.toolPosition)
+                writeFloat(command.rotationAngle)
+                writeObject(output, command.typeFaceInfo)
+            }
+        }
+    }
+
+    override fun read(kryo: Kryo, input: Input, type: Class<out TextToolCommand>): TextToolCommand {
+        return super.handleVersions(this, kryo, input, type)
+    }
+
+    override fun readCurrentVersion(kryo: Kryo, input: Input, type: Class<out TextToolCommand>): TextToolCommand {
+        return with(kryo) {
+            with(input) {
+                val text = readObject(input, Array<String>::class.java)
+                val paint = readObject(input, Paint::class.java)
+                val offset = readFloat()
+                val width = readFloat()
+                val height = readFloat()
+                val position = readObject(input, PointF::class.java)
+                val rotation = readFloat()
+                val typeFaceInfo = readObject(input, SerializableTypeface::class.java)
+                paint.apply {
+                    isFakeBoldText = typeFaceInfo.bold
+                    isUnderlineText = typeFaceInfo.underline
+                    textSize = typeFaceInfo.textSize
+                    textSkewX = typeFaceInfo.textSkewX
+                    val style = if (typeFaceInfo.italic) Typeface.ITALIC else Typeface.NORMAL
+                    try {
+                        when (typeFaceInfo.font) {
+                            "Sans Serif" -> typeface = Typeface.create(Typeface.SANS_SERIF, style)
+                            "Serif" -> typeface = Typeface.create(Typeface.SERIF, style)
+                            "Monospace" -> typeface = Typeface.create(Typeface.MONOSPACE, style)
+                            "STC" -> typeface = ResourcesCompat.getFont(activityContext, R.font.stc_regular)
+                            "Dubai" -> typeface = ResourcesCompat.getFont(activityContext, R.font.dubai)
+                        }
+                    } catch (e: Exception) {
+                        typeface = Typeface.create(Typeface.SANS_SERIF, style)
+                    }
+                }
+                TextToolCommand(text, paint, offset, width, height, position, rotation, typeFaceInfo)
+            }
+        }
+    }
+}

@@ -164,6 +164,7 @@ public class SaveInformationDialog extends MainActivityDialogFragment implements
 		spinnerArray.add("png");
 		spinnerArray.add("jpg");
 		spinnerArray.add("ora");
+		spinnerArray.add(Constants.CATROBAT_IMAGE_ENDING);
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<>(mySpinner.getContext(),
 				android.R.layout.simple_spinner_item, spinnerArray);
@@ -215,6 +216,11 @@ public class SaveInformationDialog extends MainActivityDialogFragment implements
 				FileIO.compressFormat = Bitmap.CompressFormat.PNG;
 				FileIO.isCatrobatImage = true;
 				FileIO.ending = ".ora";
+				break;
+			case Constants.CATROBAT_IMAGE_ENDING:
+				specificFormatLayout.removeAllViews();
+				FileIO.isCatrobatImage = false;
+				FileIO.ending = "." + selectedItem;
 				break;
 		}
 	}

@@ -115,7 +115,7 @@ public class BaseCommandTest {
 		}
 
 		public void storeBitmapStub() {
-			storeBitmap(InstrumentationRegistry.getInstrumentation().getTargetContext().getCacheDir());
+			storeBitmap(InstrumentationRegistry.getInstrumentation().getTargetContext().getCacheDir(), bitmap.getWidth(), bitmap.getHeight());
 		}
 	}
 }

@@ -69,4 +69,8 @@ public class FlipCommand implements Command {
 	public enum FlipDirection {
 		FLIP_HORIZONTAL, FLIP_VERTICAL
 	}
+
+	public FlipDirection getFlipDirection() {
+		return flipDirection;
+	}
 }

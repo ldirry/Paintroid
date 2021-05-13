@@ -47,4 +47,12 @@ public class PathCommand implements Command {
 	@Override
 	public void freeResources() {
 	}
+
+	public Paint getPaint() {
+		return paint;
+	}
+
+	public Path getPath() {
+		return path;
+	}
 }
