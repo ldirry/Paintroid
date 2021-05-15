@@ -20,18 +20,12 @@
 package org.catrobat.paintroid.command.implementation
 
 import android.graphics.Canvas
-import android.graphics.Paint
-
 import org.catrobat.paintroid.command.Command
 import org.catrobat.paintroid.contract.LayerContracts
 
-class SprayCommand(sprayedPoints: FloatArray, paint: Paint) : Command{
-
-    var sprayedPoints = sprayedPoints; private set
-    var paint = paint; private set
-
+class ResetCommand : Command {
     override fun run(canvas: Canvas, layerModel: LayerContracts.Model) {
-        canvas.drawPoints(sprayedPoints, paint)
+        layerModel.reset()
     }
 
     override fun freeResources() {

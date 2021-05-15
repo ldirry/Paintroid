@@ -1,6 +1,6 @@
 /*
  * Paintroid: An image manipulation application for Android.
- * Copyright (C) 2010-2015 The Catrobat Team
+ * Copyright (C) 2010-2021 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,31 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.catrobat.paintroid.command.implementation;
+package org.catrobat.paintroid.command.implementation
 
-import android.graphics.Canvas;
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import org.catrobat.paintroid.command.Command
+import org.catrobat.paintroid.contract.LayerContracts
+import org.catrobat.paintroid.model.Layer
 
-import org.catrobat.paintroid.command.Command;
-import org.catrobat.paintroid.contract.LayerContracts;
+class LoadCommand(loadedImage: Bitmap) : Command {
 
-public class RemoveLayerCommand implements Command {
-	private int position;
+    var loadedImage = loadedImage; private set
 
-	public RemoveLayerCommand(int position) {
-		this.position = position;
-	}
+    override fun run(canvas: Canvas, layerModel: LayerContracts.Model) {
+        val currentLayer = Layer(loadedImage.copy(Bitmap.Config.ARGB_8888, true))
+        layerModel.addLayerAt(0, currentLayer)
+        layerModel.currentLayer = currentLayer
+    }
 
-	@Override
-	public void run(Canvas canvas, LayerContracts.Model layerModel) {
-		layerModel.getLayers().remove(position);
-		layerModel.setCurrentLayer(layerModel.getLayers().get(0));
-	}
-
-	@Override
-	public void freeResources() {
-	}
-
-	public int getPosition() {
-		return position;
-	}
+    override fun freeResources() {
+    }
 }

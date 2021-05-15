@@ -21,17 +21,24 @@ package org.catrobat.paintroid.command.implementation
 
 import android.graphics.Canvas
 import android.graphics.Paint
-
+import android.graphics.Point
 import org.catrobat.paintroid.command.Command
 import org.catrobat.paintroid.contract.LayerContracts
+import org.catrobat.paintroid.tools.helper.FillAlgorithmFactory
 
-class SprayCommand(sprayedPoints: FloatArray, paint: Paint) : Command{
+class FillCommand(private val fillAlgorithmFactory: FillAlgorithmFactory, clickedPixel: Point, paint: Paint, colorTolerance: Float) : Command {
 
-    var sprayedPoints = sprayedPoints; private set
+    var clickedPixel = clickedPixel; private set
     var paint = paint; private set
+    var colorTolerance = colorTolerance; private set
 
     override fun run(canvas: Canvas, layerModel: LayerContracts.Model) {
-        canvas.drawPoints(sprayedPoints, paint)
+        layerModel.currentLayer ?: return
+        val bitmap = layerModel.currentLayer.bitmap
+        val replacementColor = bitmap.getPixel(clickedPixel.x, clickedPixel.y)
+        val fillAlgorithm = fillAlgorithmFactory.createFillAlgorithm()
+        fillAlgorithm.setParameters(bitmap, clickedPixel, paint.color, replacementColor, colorTolerance)
+        fillAlgorithm.performFilling()
     }
 
     override fun freeResources() {

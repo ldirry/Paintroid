@@ -19,21 +19,43 @@
 
 package org.catrobat.paintroid.command.implementation
 
+import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Paint
-
+import android.graphics.Matrix
 import org.catrobat.paintroid.command.Command
 import org.catrobat.paintroid.contract.LayerContracts
 
-class SprayCommand(sprayedPoints: FloatArray, paint: Paint) : Command{
+class RotateCommand(rotateDirection: RotateDirection) : Command {
 
-    var sprayedPoints = sprayedPoints; private set
-    var paint = paint; private set
+    var rotateDirection = rotateDirection; private set
+
+    companion object {
+        private const val ANGLE = 90f
+    }
 
     override fun run(canvas: Canvas, layerModel: LayerContracts.Model) {
-        canvas.drawPoints(sprayedPoints, paint)
+        val rotateMatrix = Matrix().apply {
+            when (rotateDirection) {
+                RotateDirection.ROTATE_RIGHT -> postRotate(ANGLE)
+                RotateDirection.ROTATE_LEFT -> postRotate(-ANGLE)
+            }
+        }
+        val iterator: Iterator<LayerContracts.Layer> = layerModel.listIterator(0)
+        while (iterator.hasNext()) {
+            val currentLayer = iterator.next()
+            val rotatedBitmap = Bitmap.createBitmap(currentLayer.bitmap, 0, 0,
+                    layerModel.width, layerModel.height, rotateMatrix, true)
+            currentLayer.bitmap = rotatedBitmap
+        }
+        val tmpWidth = layerModel.width
+        layerModel.width = layerModel.height
+        layerModel.height = tmpWidth
     }
 
     override fun freeResources() {
+    }
+
+    enum class RotateDirection {
+        ROTATE_LEFT, ROTATE_RIGHT
     }
 }

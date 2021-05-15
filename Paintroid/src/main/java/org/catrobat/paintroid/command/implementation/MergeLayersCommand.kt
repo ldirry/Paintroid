@@ -20,18 +20,26 @@
 package org.catrobat.paintroid.command.implementation
 
 import android.graphics.Canvas
-import android.graphics.Paint
-
 import org.catrobat.paintroid.command.Command
 import org.catrobat.paintroid.contract.LayerContracts
 
-class SprayCommand(sprayedPoints: FloatArray, paint: Paint) : Command{
+class MergeLayersCommand(position: Int, mergeWith: Int) : Command {
 
-    var sprayedPoints = sprayedPoints; private set
-    var paint = paint; private set
+    var position = position; private set
+    var mergeWith = mergeWith; private set
 
     override fun run(canvas: Canvas, layerModel: LayerContracts.Model) {
-        canvas.drawPoints(sprayedPoints, paint)
+        val sourceLayer = layerModel.getLayerAt(position)
+        val destinationLayer = layerModel.getLayerAt(mergeWith)
+        val destinationBitmap = destinationLayer.bitmap
+        val copyBitmap = destinationBitmap.copy(destinationBitmap.config, true)
+        val copyCanvas = Canvas(copyBitmap)
+        copyCanvas.drawBitmap(sourceLayer.bitmap, 0f, 0f, null)
+        destinationLayer.bitmap = copyBitmap
+        layerModel.removeLayerAt(position)
+        if (sourceLayer === layerModel.currentLayer) {
+            layerModel.currentLayer = destinationLayer
+        }
     }
 
     override fun freeResources() {

@@ -20,18 +20,16 @@
 package org.catrobat.paintroid.command.implementation
 
 import android.graphics.Canvas
-import android.graphics.Paint
-
 import org.catrobat.paintroid.command.Command
 import org.catrobat.paintroid.contract.LayerContracts
 
-class SprayCommand(sprayedPoints: FloatArray, paint: Paint) : Command{
+class RemoveLayerCommand(position: Int) : Command {
 
-    var sprayedPoints = sprayedPoints; private set
-    var paint = paint; private set
+    var position = position; private set
 
     override fun run(canvas: Canvas, layerModel: LayerContracts.Model) {
-        canvas.drawPoints(sprayedPoints, paint)
+        layerModel.layers.removeAt(position)
+        layerModel.currentLayer = layerModel.layers[0]
     }
 
     override fun freeResources() {

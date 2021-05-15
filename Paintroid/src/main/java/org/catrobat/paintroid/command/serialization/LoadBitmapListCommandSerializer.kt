@@ -10,8 +10,8 @@ import org.catrobat.paintroid.command.implementation.LoadBitmapListCommand
 class LoadBitmapListCommandSerializer(version: Int): VersionSerializer<LoadBitmapListCommand>(version) {
     override fun write(kryo: Kryo, output: Output, command: LoadBitmapListCommand) {
         output.writeInt(command.loadedImageList.size)
-        command.loadedImageList.forEach {
-            it?.compress(Bitmap.CompressFormat.PNG, 100, output)
+        command.loadedImageList.forEach { bitmap ->
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, output)
         }
     }
 

@@ -9,7 +9,7 @@ import org.catrobat.paintroid.command.implementation.LoadCommand
 
 class LoadCommandSerializer(version: Int): VersionSerializer<LoadCommand>(version) {
     override fun write(kryo: Kryo, output: Output, command: LoadCommand) {
-        command.loadedImage?.compress(Bitmap.CompressFormat.PNG, 100, output)
+        command.loadedImage.compress(Bitmap.CompressFormat.PNG, 100, output)
     }
 
     override fun read(kryo: Kryo, input: Input, type: Class<out LoadCommand>): LoadCommand {

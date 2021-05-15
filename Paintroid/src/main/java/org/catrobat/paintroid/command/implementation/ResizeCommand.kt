@@ -1,6 +1,6 @@
 /*
  * Paintroid: An image manipulation application for Android.
- * Copyright (C) 2010-2021 The Catrobat Team
+ * Copyright (C) 2010-2015 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,22 +16,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.catrobat.paintroid.command.implementation
 
+import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Paint
-
 import org.catrobat.paintroid.command.Command
 import org.catrobat.paintroid.contract.LayerContracts
 
-class SprayCommand(sprayedPoints: FloatArray, paint: Paint) : Command{
+class ResizeCommand(newWidth: Int, newHeight: Int) : Command {
 
-    var sprayedPoints = sprayedPoints; private set
-    var paint = paint; private set
+    var newWidth = newWidth; private set
+    var newHeight = newHeight; private set
 
     override fun run(canvas: Canvas, layerModel: LayerContracts.Model) {
-        canvas.drawPoints(sprayedPoints, paint)
+        val iterator = layerModel.listIterator(0)
+        while (iterator.hasNext()) {
+            val currentLayer = iterator.next()
+            val currentBitmap = currentLayer.bitmap
+            val resizedBitmap = Bitmap.createScaledBitmap(currentBitmap, newWidth, newHeight, true)
+            currentLayer.bitmap = resizedBitmap
+        }
+        layerModel.height = newHeight
+        layerModel.width = newWidth
     }
 
     override fun freeResources() {

@@ -9,8 +9,8 @@ import org.catrobat.paintroid.command.implementation.PathCommand
 class PathCommandSerializer(version: Int): VersionSerializer<PathCommand>(version) {
     override fun write(kryo: Kryo, output: Output, command: PathCommand) {
         with(kryo) {
-            writeObject(output, command.getPaint())
-            writeObject(output, command.getPath() as SerializablePath)
+            writeObject(output, command.paint)
+            writeObject(output, command.path as SerializablePath)
         }
     }
 

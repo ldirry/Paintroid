@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import androidx.annotation.VisibleForTesting
 import com.esotericsoftware.kryo.Kryo
 import com.esotericsoftware.kryo.io.Input
 import com.esotericsoftware.kryo.io.Output
@@ -29,7 +28,6 @@ class CommandSerializationUtilities(private val activityContext: Context, privat
         const val MAGIC_VALUE = "CATROBAT"
     }
 
-    @VisibleForTesting
     val kryo = Kryo()
     private val registerMap = LinkedHashMap<Class<*>, VersionSerializer<*>?>()
 

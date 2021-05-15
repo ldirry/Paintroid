@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.catrobat.paintroid.test.command.implementation;
+package org.catrobat.paintroid.test.junit.command;
 
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -44,7 +44,6 @@ import static org.catrobat.paintroid.command.implementation.RotateCommand.Rotate
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class DefaultCommandFactoryTest {
 
@@ -63,7 +62,7 @@ public class DefaultCommandFactoryTest {
 
 	@Test
 	public void testCreateInitCommandWithBitmap() {
-		Command command = commandFactory.createInitCommand(mock(Bitmap.class));
+		Command command = commandFactory.createInitCommand(Bitmap.createBitmap(20, 20, Bitmap.Config.ARGB_8888));
 		assertThat(command, is(instanceOf(CompositeCommand.class)));
 	}
 
@@ -123,10 +122,7 @@ public class DefaultCommandFactoryTest {
 
 	@Test
 	public void testCreatePointCommand() {
-		PointF coordinate = mock(PointF.class);
-		Paint paint = mock(Paint.class);
-
-		Command command = commandFactory.createPointCommand(paint, coordinate);
+		Command command = commandFactory.createPointCommand(new Paint(), new PointF(3f, 5f));
 		assertThat(command, is(instanceOf(PointCommand.class)));
 	}
 

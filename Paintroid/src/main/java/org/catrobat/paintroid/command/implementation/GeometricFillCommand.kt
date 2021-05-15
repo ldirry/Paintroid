@@ -21,17 +21,29 @@ package org.catrobat.paintroid.command.implementation
 
 import android.graphics.Canvas
 import android.graphics.Paint
-
+import android.graphics.RectF
 import org.catrobat.paintroid.command.Command
 import org.catrobat.paintroid.contract.LayerContracts
+import org.catrobat.paintroid.tools.drawable.ShapeDrawable
 
-class SprayCommand(sprayedPoints: FloatArray, paint: Paint) : Command{
+class GeometricFillCommand(shapeDrawable: ShapeDrawable, pointX: Int, pointY: Int, boxRect: RectF,
+                           boxRotation: Float, paint: Paint) : Command {
 
-    var sprayedPoints = sprayedPoints; private set
+    var shapeDrawable = shapeDrawable; private set
+    var pointX = pointX; private set
+    var pointY = pointY; private set
+    var boxRect = boxRect; private set
+    var boxRotation = boxRotation; private set
     var paint = paint; private set
 
     override fun run(canvas: Canvas, layerModel: LayerContracts.Model) {
-        canvas.drawPoints(sprayedPoints, paint)
+       with (canvas) {
+           save()
+           translate(pointX.toFloat(), pointY.toFloat())
+           rotate(boxRotation)
+           shapeDrawable.draw(this, boxRect, paint)
+           restore()
+       }
     }
 
     override fun freeResources() {

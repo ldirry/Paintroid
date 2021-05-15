@@ -1,6 +1,6 @@
 /*
  * Paintroid: An image manipulation application for Android.
- * Copyright (C) 2010-2015 The Catrobat Team
+ * Copyright (C) 2010-2021 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,30 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.catrobat.paintroid.command.implementation;
+package org.catrobat.paintroid.command.implementation
 
-import android.graphics.Canvas;
+import android.graphics.Canvas
+import org.catrobat.paintroid.command.Command
+import org.catrobat.paintroid.contract.LayerContracts
 
-import org.catrobat.paintroid.command.Command;
-import org.catrobat.paintroid.contract.LayerContracts;
+class ReorderLayersCommand(position: Int, destination: Int) : Command {
 
-public class SelectLayerCommand implements Command {
-	private final int position;
+    var position = position; private set
+    var destination = destination; private set
 
-	public SelectLayerCommand(int position) {
-		this.position = position;
-	}
+    override fun run(canvas: Canvas, layerModel: LayerContracts.Model) {
+        layerModel.run {
+            val tempLayer = getLayerAt(position)
+            removeLayerAt(position)
+            addLayerAt(destination, tempLayer)
+        }
+    }
 
-	@Override
-	public void run(Canvas canvas, LayerContracts.Model layerModel) {
-		layerModel.setCurrentLayer(layerModel.getLayers().get(position));
-	}
-
-	@Override
-	public void freeResources() {
-	}
-
-	public int getPosition() {
-		return position;
-	}
+    override fun freeResources() {
+    }
 }

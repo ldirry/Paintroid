@@ -19,19 +19,22 @@
 
 package org.catrobat.paintroid.command.implementation
 
+import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Paint
-
 import org.catrobat.paintroid.command.Command
 import org.catrobat.paintroid.contract.LayerContracts
+import org.catrobat.paintroid.model.Layer
 
-class SprayCommand(sprayedPoints: FloatArray, paint: Paint) : Command{
+class LoadBitmapListCommand(loadedImageList: List<Bitmap>) : Command {
 
-    var sprayedPoints = sprayedPoints; private set
-    var paint = paint; private set
+    var loadedImageList = loadedImageList; private set
 
     override fun run(canvas: Canvas, layerModel: LayerContracts.Model) {
-        canvas.drawPoints(sprayedPoints, paint)
+        loadedImageList.forEachIndexed { index, bitmap ->
+            val currentLayer = Layer(bitmap.copy(Bitmap.Config.ARGB_8888, true))
+            layerModel.addLayerAt(index, currentLayer)
+        }
+        layerModel.currentLayer = layerModel.getLayerAt(0)
     }
 
     override fun freeResources() {

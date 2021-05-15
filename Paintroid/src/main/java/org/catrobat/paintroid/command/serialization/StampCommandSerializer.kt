@@ -14,10 +14,10 @@ class StampCommandSerializer(version: Int): VersionSerializer<StampCommand>(vers
     override fun write(kryo: Kryo, output: Output, command: StampCommand) {
         with(kryo) {
             with(output) {
-                var bitmap = command.getFileToStoredBitmap()?.let {
-                    FileIO.getBitmapFromFile(command.getFileToStoredBitmap())
+                var bitmap = command.fileToStoredBitmap?.let { file ->
+                    FileIO.getBitmapFromFile(file)
                 }
-                bitmap = bitmap ?: command.getBitmap() ?: throw KryoException()
+                bitmap = bitmap ?: command.bitmap ?: throw KryoException()
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, output)
                 writeObject(output, command.coordinates)
                 writeFloat(command.boxWidth)

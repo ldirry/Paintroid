@@ -17,15 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.catrobat.paintroid.command;
+package org.catrobat.paintroid.command.implementation
 
-import android.graphics.Canvas;
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Path
+import org.catrobat.paintroid.command.Command
+import org.catrobat.paintroid.contract.LayerContracts
 
-import org.catrobat.paintroid.contract.LayerContracts;
+class PathCommand(paint: Paint, path: Path) : Command {
 
-public interface Command {
+    var paint = paint; private set
+    var path = path; private set
 
-	void run(Canvas canvas, LayerContracts.Model layerModel);
+    override fun run(canvas: Canvas, layerModel: LayerContracts.Model) {
+        canvas.drawPath(path, paint)
+    }
 
-	void freeResources();
+    override fun freeResources() {
+    }
 }

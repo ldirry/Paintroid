@@ -1,6 +1,6 @@
 /*
  * Paintroid: An image manipulation application for Android.
- * Copyright (C) 2010-2015 The Catrobat Team
+ * Copyright (C) 2010-2021 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,23 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.catrobat.paintroid.command.implementation;
+package org.catrobat.paintroid.command
 
-import android.graphics.Canvas;
+import android.graphics.Canvas
+import org.catrobat.paintroid.contract.LayerContracts
 
-import org.catrobat.paintroid.command.Command;
-import org.catrobat.paintroid.contract.LayerContracts;
-
-public class ResetCommand implements Command {
-	public ResetCommand() {
-	}
-
-	@Override
-	public void run(Canvas canvas, LayerContracts.Model layerModel) {
-		layerModel.reset();
-	}
-
-	@Override
-	public void freeResources() {
-	}
+interface Command {
+    fun run(canvas: Canvas, layerModel: LayerContracts.Model)
+    fun freeResources()
 }

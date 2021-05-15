@@ -10,8 +10,8 @@ import org.catrobat.paintroid.command.implementation.PointCommand
 class PointCommandSerializer(version: Int): VersionSerializer<PointCommand>(version) {
     override fun write(kryo: Kryo, output: Output, command: PointCommand) {
         with(kryo) {
-            writeObject(output, command.getPoint())
-            writeObject(output, command.getPaint())
+            writeObject(output, command.point)
+            writeObject(output, command.paint)
         }
     }
 

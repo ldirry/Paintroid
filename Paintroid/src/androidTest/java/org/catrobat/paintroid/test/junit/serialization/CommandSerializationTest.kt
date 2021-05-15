@@ -212,11 +212,13 @@ class CommandSerializationTest {
 
     @Test
     fun testMultipleCommands() {
-        expectedModel.commands.add(commandFactory.createSprayCommand(floatArrayOf(20f, 347.5f, 99.239f), paint))
-        expectedModel.commands.add(commandFactory.createResizeCommand(400, 200))
-        expectedModel.commands.add(commandFactory.createRotateCommand(RotateCommand.RotateDirection.ROTATE_RIGHT))
-        expectedModel.commands.add(commandFactory.createAddLayerCommand())
-        expectedModel.commands.add(commandFactory.createPointCommand(paint, PointF(30.43f, 40.28f)))
+        with (expectedModel.commands) {
+            add(commandFactory.createSprayCommand(floatArrayOf(20f, 347.5f, 99.239f), paint))
+            add(commandFactory.createResizeCommand(400, 200))
+            add(commandFactory.createRotateCommand(RotateCommand.RotateDirection.ROTATE_RIGHT))
+            add(commandFactory.createAddLayerCommand())
+            add(commandFactory.createPointCommand(paint, PointF(30.43f, 40.28f)))
+        }
     }
 
     private fun assertSerializeAndDeserialize() {
@@ -331,7 +333,7 @@ class CommandSerializationTest {
     }
 
     private fun equalsFillCommand(expectedCommand: FillCommand, actualCommand: FillCommand): Boolean {
-        return DefaultToolPaint.arePaintEquals(expectedCommand.paint, actualCommand.paint) && expectedCommand.clickedPixel.equals(actualCommand.clickedPixel)
+        return DefaultToolPaint.arePaintEquals(expectedCommand.paint, actualCommand.paint) && expectedCommand.clickedPixel == actualCommand.clickedPixel
                 && expectedCommand.colorTolerance == actualCommand.colorTolerance
     }
 
@@ -356,15 +358,15 @@ class CommandSerializationTest {
     }
 
     private fun equalsStampCommand(expectedCommand: StampCommand, actualCommand: StampCommand): Boolean {
-        return expectedCommand.bitmap.sameAs(actualCommand.bitmap) && expectedCommand.coordinates.equals(actualCommand.coordinates)
+        return expectedCommand.bitmap!!.sameAs(actualCommand.bitmap) && expectedCommand.coordinates == actualCommand.coordinates
                 && expectedCommand.boxWidth == actualCommand.boxWidth && expectedCommand.boxHeight == actualCommand.boxHeight
                 && expectedCommand.boxRotation == actualCommand.boxRotation
     }
 
     private fun equalsTextToolCommand(expectedCommand: TextToolCommand, actualCommand: TextToolCommand): Boolean {
-        return DefaultToolPaint.arePaintEquals(expectedCommand.textPaint, actualCommand.textPaint) && Arrays.equals(expectedCommand.multilineText, actualCommand.multilineText)
+        return DefaultToolPaint.arePaintEquals(expectedCommand.textPaint, actualCommand.textPaint) && expectedCommand.multilineText.contentEquals(actualCommand.multilineText)
                 && expectedCommand.boxOffset == actualCommand.boxOffset && expectedCommand.boxWidth == actualCommand.boxWidth && expectedCommand.boxHeight == actualCommand.boxHeight
-                && expectedCommand.toolPosition.equals(actualCommand.toolPosition) && expectedCommand.rotationAngle == actualCommand.rotationAngle
+                && expectedCommand.toolPosition == actualCommand.toolPosition && expectedCommand.rotationAngle == actualCommand.rotationAngle
                 && equalsSerializableTypeFace(expectedCommand.typeFaceInfo, actualCommand.typeFaceInfo)
     }
 
@@ -376,7 +378,7 @@ class CommandSerializationTest {
 
     private fun equalsGeometricFillCommand(expectedCommand: GeometricFillCommand, actualCommand: GeometricFillCommand): Boolean {
         return expectedCommand.pointX == actualCommand.pointX && expectedCommand.pointY == actualCommand.pointY
-                && DefaultToolPaint.arePaintEquals(expectedCommand.paint, actualCommand.paint) && expectedCommand.boxRect.equals(actualCommand.boxRect)
+                && DefaultToolPaint.arePaintEquals(expectedCommand.paint, actualCommand.paint) && expectedCommand.boxRect == actualCommand.boxRect
                 && expectedCommand.boxRotation == actualCommand.boxRotation && expectedCommand.shapeDrawable.javaClass == actualCommand.shapeDrawable.javaClass
     }
 
