@@ -1,6 +1,6 @@
 /*
  * Paintroid: An image manipulation application for Android.
- * Copyright (C) 2010-2015 The Catrobat Team
+ * Copyright (C) 2010-2021 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,20 +21,19 @@ package org.catrobat.paintroid.command.implementation
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.util.Log
+
 import org.catrobat.paintroid.command.Command
 import org.catrobat.paintroid.contract.LayerContracts
 
-class SprayCommand(
-        private val sprayedPoints: FloatArray,
-        private val paint: Paint
-) : Command {
+class SprayCommand(sprayedPoints: FloatArray, paint: Paint) : Command{
 
-    override fun run(canvas: Canvas?, layerModel: LayerContracts.Model?) {
-        canvas?.drawPoints(sprayedPoints, paint)
+    var sprayedPoints = sprayedPoints; private set
+    var paint = paint; private set
+
+    override fun run(canvas: Canvas, layerModel: LayerContracts.Model) {
+        canvas.drawPoints(sprayedPoints, paint)
     }
 
     override fun freeResources() {
-        //nothing to free
     }
 }

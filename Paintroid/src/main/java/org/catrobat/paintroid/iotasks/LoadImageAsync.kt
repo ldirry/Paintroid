@@ -24,12 +24,15 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.util.Log
 import android.webkit.MimeTypeMap
+
 import org.catrobat.paintroid.FileIO
-import java.io.IOException
+import org.catrobat.paintroid.command.serialization.CommandSerializationUtilities
+import org.catrobat.paintroid.tools.Workspace
+
 import java.lang.ref.WeakReference
 import java.util.*
 
-class LoadImageAsync(callback: LoadImageCallback, private val requestCode: Int, private val uri: Uri?, context: Context, scaling: Boolean) :
+class LoadImageAsync(callback: LoadImageCallback, private val requestCode: Int, private val uri: Uri?, context: Context, scaling: Boolean, private val workspace: Workspace) :
 		AsyncTask<Void?, Void?, BitmapReturnValue?>() {
 	private val callbackRef: WeakReference<LoadImageCallback> = WeakReference(callback)
 	private val scaleImage: Boolean = scaling
@@ -61,8 +64,14 @@ class LoadImageAsync(callback: LoadImageCallback, private val requestCode: Int, 
 				val fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString())
 				MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase(Locale.US))
 			}
-			val returnValue: BitmapReturnValue = if (mimeType == "application/zip" || mimeType == "application/octet-stream") {
-				OpenRasterFileFormatConversion.importOraFile(resolver, uri, context.get())
+			val returnValue: BitmapReturnValue? = if (mimeType == "application/zip" || mimeType == "application/octet-stream") {
+				try {
+					workspace.commandSerializationHelper.readFromFile(uri)?.let { model ->
+						BitmapReturnValue(model)
+					}
+				} catch(e: CommandSerializationUtilities.NotCatrobatImageException) {
+					OpenRasterFileFormatConversion.importOraFile(resolver, uri, context.get())
+				}
 			} else {
 				if (scaleImage) {
 					FileIO.getScaledBitmapFromUri(resolver, uri, context.get())
@@ -71,10 +80,7 @@ class LoadImageAsync(callback: LoadImageCallback, private val requestCode: Int, 
 				}
 			}
 			returnValue
-		} catch (e: IOException) {
-			Log.e(TAG, "Can't load image file", e)
-			null
-		} catch (e: NullPointerException) {
+		} catch (e: Exception) {
 			Log.e(TAG, "Can't load image file", e)
 			null
 		}

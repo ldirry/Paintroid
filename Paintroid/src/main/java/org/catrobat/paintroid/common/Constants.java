@@ -61,6 +61,8 @@ public final class Constants {
 	public static final int MAX_LAYERS = 4;
 	public static final String SCALE_IMAGE_FRAGMENT_TAG = "showscaleimagedialog";
 
+	public static final String CATROBAT_IMAGE_ENDING = "catrobat-image";
+
 	private Constants() {
 		throw new AssertionError();
 	}

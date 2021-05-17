@@ -64,9 +64,11 @@ public class ImportTool extends BaseToolWithRectangleShape {
 
 	@Override
 	public void onClickOnButton() {
-		highlightBox();
-		Command command = commandFactory.createStampCommand(drawingBitmap, toolPosition, boxWidth, boxHeight, boxRotation);
-		commandManager.addCommand(command);
+		if (drawingBitmap != null) {
+			highlightBox();
+			Command command = commandFactory.createStampCommand(drawingBitmap, toolPosition, boxWidth, boxHeight, boxRotation);
+			commandManager.addCommand(command);
+		}
 	}
 
 	public void setBitmapFromSource(Bitmap bitmap) {

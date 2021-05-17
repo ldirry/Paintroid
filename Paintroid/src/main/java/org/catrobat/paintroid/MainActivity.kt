@@ -40,6 +40,7 @@ import org.catrobat.paintroid.command.CommandManager.CommandListener
 import org.catrobat.paintroid.command.implementation.AsyncCommandManager
 import org.catrobat.paintroid.command.implementation.DefaultCommandFactory
 import org.catrobat.paintroid.command.implementation.DefaultCommandManager
+import org.catrobat.paintroid.command.serialization.CommandSerializationUtilities
 import org.catrobat.paintroid.common.CommonFactory
 import org.catrobat.paintroid.common.Constants
 import org.catrobat.paintroid.contract.LayerContracts
@@ -243,7 +244,7 @@ class MainActivity : AppCompatActivity(), MainView, CommandListener {
         bottomNavigationViewHolder = BottomNavigationViewHolder(bottomNavigationView, resources.configuration.orientation, applicationContext)
         perspective = Perspective(layerModel.width, layerModel.height)
         val listener = DefaultWorkspace.Listener { drawingSurface.refreshDrawingSurface() }
-        workspace = DefaultWorkspace(layerModel, perspective, listener)
+        workspace = DefaultWorkspace(layerModel, perspective, listener, CommandSerializationUtilities(this, commandManager))
         model = MainActivityModel()
         defaultToolController = DefaultToolController(toolReference, toolOptionsViewController,
                 DefaultToolFactory(), commandManager, workspace, toolPaint, DefaultContextCallback(context))

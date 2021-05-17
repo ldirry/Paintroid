@@ -22,10 +22,10 @@ import android.content.ContentResolver
 import android.net.Uri
 import android.os.AsyncTask
 import android.util.Log
+
 import org.catrobat.paintroid.FileIO
 import org.catrobat.paintroid.common.Constants
 import org.catrobat.paintroid.tools.Workspace
-import java.io.IOException
 import java.lang.ref.WeakReference
 
 class SaveImageAsync(activity: SaveImageCallback, private val requestCode: Int, workspace: Workspace, uri: Uri?, saveAsCopy: Boolean) : AsyncTask<Void?, Void?, Uri?>() {
@@ -60,6 +60,8 @@ class SaveImageAsync(activity: SaveImageCallback, private val requestCode: Int, 
 						FileIO.uriFileOra = imageUri
 						imageUri
 					}
+				 } else if (FileIO.ending == "." + Constants.CATROBAT_IMAGE_ENDING) {
+						workspace.commandSerializationHelper.writeToFile(fileName)
 				} else {
 					if (uri != null && FileIO.catroidFlag) {
 						FileIO.saveBitmapToUri(uri, callback.contentResolver, bitmap)
@@ -78,10 +80,8 @@ class SaveImageAsync(activity: SaveImageCallback, private val requestCode: Int, 
 						imageUri
 					}
 				}
-			} catch (e: IOException) {
+			} catch (e: Exception) {
 				Log.d(TAG, "Can't save image file", e)
-			} catch (e: NullPointerException) {
-				Log.e(TAG, "Can't load image file", e)
 			}
 		}
 		return null

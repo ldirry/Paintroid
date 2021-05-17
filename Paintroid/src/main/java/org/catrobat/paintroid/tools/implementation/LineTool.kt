@@ -6,6 +6,7 @@ import android.graphics.PointF
 import android.graphics.RectF
 import androidx.annotation.VisibleForTesting
 import org.catrobat.paintroid.command.CommandManager
+import org.catrobat.paintroid.command.serialization.SerializablePath
 import org.catrobat.paintroid.tools.ContextCallback
 import org.catrobat.paintroid.tools.ToolPaint
 import org.catrobat.paintroid.tools.ToolType
@@ -68,7 +69,7 @@ class LineTool(private val brushToolOptionsView: BrushToolOptionsView, contextCa
             return false
         }
         val bounds = RectF()
-        val finalPath = Path().apply {
+        val finalPath = SerializablePath().apply {
             moveTo(initialEventCoordinate?.x ?: return false,
                    initialEventCoordinate?.y ?: return false)
             lineTo(coordinate.x, coordinate.y)

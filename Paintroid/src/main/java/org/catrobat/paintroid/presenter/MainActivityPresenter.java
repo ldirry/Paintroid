@@ -418,13 +418,13 @@ public class MainActivityPresenter implements Presenter, SaveImageCallback, Load
 				Uri selectedGalleryImageUri = data.getData();
 				setTool(ToolType.IMPORTPNG);
 				toolController.switchTool(ToolType.IMPORTPNG, false);
-				interactor.loadFile(this, LOAD_IMAGE_IMPORTPNG, selectedGalleryImageUri, getContext(), false);
+				interactor.loadFile(this, LOAD_IMAGE_IMPORTPNG, selectedGalleryImageUri, getContext(), false, workspace);
 				break;
 			case REQUEST_CODE_LOAD_PICTURE:
 				if (resultCode != Activity.RESULT_OK) {
 					return;
 				}
-				interactor.loadFile(this, LOAD_IMAGE_DEFAULT, data.getData(), getContext(), false);
+				interactor.loadFile(this, LOAD_IMAGE_DEFAULT, data.getData(), getContext(), false, workspace);
 				break;
 			case REQUEST_CODE_INTRO:
 				if (resultCode == RESULT_INTRO_MW_NOT_SUPPORTED) {
@@ -569,7 +569,7 @@ public class MainActivityPresenter implements Presenter, SaveImageCallback, Load
 			if (imageFile.exists()) {
 				model.setSavedPictureUri(view.getUriFromFile(imageFile));
 
-				interactor.loadFile(this, LOAD_IMAGE_CATROID, model.getSavedPictureUri(), getContext(), false);
+				interactor.loadFile(this, LOAD_IMAGE_CATROID, model.getSavedPictureUri(), getContext(), false, workspace);
 			} else {
 				interactor.createFile(this, CREATE_FILE_DEFAULT, extraPictureName);
 			}
@@ -709,11 +709,11 @@ public class MainActivityPresenter implements Presenter, SaveImageCallback, Load
 			case LOAD_IMAGE_IMPORTPNG:
 				setTool(ToolType.IMPORTPNG);
 				toolController.switchTool(ToolType.IMPORTPNG, false);
-				interactor.loadFile(this, LOAD_IMAGE_IMPORTPNG, uri, context, true);
+				interactor.loadFile(this, LOAD_IMAGE_IMPORTPNG, uri, context, true, workspace);
 				break;
 			case LOAD_IMAGE_CATROID:
 			case LOAD_IMAGE_DEFAULT:
-				interactor.loadFile(this, LOAD_IMAGE_DEFAULT, uri, context, true);
+				interactor.loadFile(this, LOAD_IMAGE_DEFAULT, uri, context, true, workspace);
 				break;
 			default:
 				Log.e(MainActivity.TAG, "wrong request code for loading pictures");
@@ -726,6 +726,12 @@ public class MainActivityPresenter implements Presenter, SaveImageCallback, Load
 
 		if (bitmap == null) {
 			navigator.showLoadErrorDialog();
+			return;
+		}
+
+		if (bitmap.model != null) {
+			commandManager.loadCommandsCatrobatImage(bitmap.model);
+			resetPerspectiveAfterNextCommand = true;
 			return;
 		}
 

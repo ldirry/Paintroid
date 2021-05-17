@@ -21,11 +21,11 @@ package org.catrobat.paintroid.tools.implementation;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PointF;
 
 import org.catrobat.paintroid.command.Command;
 import org.catrobat.paintroid.command.CommandManager;
+import org.catrobat.paintroid.command.serialization.SerializablePath;
 import org.catrobat.paintroid.tools.ContextCallback;
 import org.catrobat.paintroid.tools.ToolPaint;
 import org.catrobat.paintroid.tools.ToolType;
@@ -42,7 +42,7 @@ import static org.catrobat.paintroid.tools.common.Constants.MOVE_TOLERANCE;
 public class BrushTool extends BaseTool {
 
 	@VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-	public Path pathToDraw;
+	public SerializablePath pathToDraw;
 	private final PointF drawToolMovedDistance;
 	private PointF initialEventCoordinate;
 	private boolean pathInsideBitmap;
@@ -54,7 +54,7 @@ public class BrushTool extends BaseTool {
 		super(contextCallback, toolOptionsViewController, toolPaint, workspace, commandManager);
 		this.brushToolOptionsView = brushToolOptionsView;
 
-		pathToDraw = new Path();
+		pathToDraw = new SerializablePath();
 		pathToDraw.incReserve(1);
 		drawToolMovedDistance = new PointF(0f, 0f);
 		pathInsideBitmap = false;

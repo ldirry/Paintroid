@@ -101,8 +101,10 @@ public class StampTool extends BaseToolWithRectangleShape {
 	}
 
 	private void pasteBoxContent() {
-		Command command = commandFactory.createStampCommand(drawingBitmap, toolPosition, boxWidth, boxHeight, boxRotation);
-		commandManager.addCommand(command);
+		if (drawingBitmap != null) {
+			Command command = commandFactory.createStampCommand(drawingBitmap, toolPosition, boxWidth, boxHeight, boxRotation);
+			commandManager.addCommand(command);
+		}
 	}
 
 	private void cutBoxContent() {
