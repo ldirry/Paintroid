@@ -1,3 +1,21 @@
+/*
+ * Paintroid: An image manipulation application for Android.
+ * Copyright (C) 2010-2021 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.catrobat.paintroid.command.serialization
 
 import android.content.ContentValues
@@ -40,9 +58,9 @@ class CommandSerializationUtilities(private val activityContext: Context, privat
         with(registerMap) {
             put(Command::class.java, null)
             put(CompositeCommand::class.java, CompositeCommandSerializer(version))
-            put(FloatArray::class.java, null)
-            put(PointF::class.java, null)
-            put(Point::class.java, null)
+            put(FloatArray::class.java, DataStructuresSerializer.FloatArraySerializer(version))
+            put(PointF::class.java, DataStructuresSerializer.PointFSerializer(version))
+            put(Point::class.java, DataStructuresSerializer.PointSerializer(version))
             put(CommandManagerModel::class.java, CommandManagerModelSerializer(version))
             put(SetDimensionCommand::class.java, SetDimensionCommandSerializer(version))
             put(SprayCommand::class.java, SprayCommandSerializer(version))
@@ -51,7 +69,7 @@ class CommandSerializationUtilities(private val activityContext: Context, privat
             put(SelectLayerCommand::class.java, SelectLayerCommandSerializer(version))
             put(LoadCommand::class.java, LoadCommandSerializer(version))
             put(TextToolCommand::class.java, TextToolCommandSerializer(version, activityContext))
-            put(Array<String>::class.java, null)
+            put(Array<String>::class.java, DataStructuresSerializer.StringArraySerializer(version))
             put(FillCommand::class.java, FillCommandSerializer(version))
             put(FlipCommand::class.java, FlipCommandSerializer(version))
             put(CropCommand::class.java, CropCommandSerializer(version))
@@ -75,7 +93,7 @@ class CommandSerializationUtilities(private val activityContext: Context, privat
             put(RectangleDrawable::class.java, GeometricFillCommandSerializer.RectangleDrawableSerializer(version))
             put(StarDrawable::class.java, GeometricFillCommandSerializer.StarDrawableSerializer(version))
             put(ShapeDrawable::class.java, null)
-            put(RectF::class.java, null)
+            put(RectF::class.java, DataStructuresSerializer.RectFSerializer(version))
             put(StampCommand::class.java, StampCommandSerializer(version))
             put(SerializableTypeface::class.java, SerializableTypeface.TypefaceSerializer(version))
             put(PointCommand::class.java, PointCommandSerializer(version))
