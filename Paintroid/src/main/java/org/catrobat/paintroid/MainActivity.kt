@@ -30,6 +30,7 @@ import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
+import android.widget.Toast
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -189,6 +190,7 @@ class MainActivity : AppCompatActivity(), MainView, CommandListener {
         }
         commandManager.addCommandListener(this)
         presenter.finishInitialize()
+        Toast.makeText(this, "Worked", Toast.LENGTH_LONG).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
